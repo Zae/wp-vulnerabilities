@@ -1,0 +1,34 @@
+{
+    "name": "zae/wp-vulnerabilities",
+    "description": "Scan your wordpress installation for known vulnerabilities",
+    "type": "library",
+    "keywords": ["wordpress", "vulnerabilities", "scanner", "wpvulndb.com"],
+    "require": {
+        "php": ">=5.4",
+        "guzzlehttp/guzzle": "^6.1",
+        "illuminate/container": "^5.2",
+        "illuminate/console": "^5.2",
+        "symfony/yaml": "^3.0",
+        "illuminate/filesystem": "^5.2",
+        "illuminate/pipeline": "^5.2",
+        "composer/semver": "^1.2",
+        "illuminate/events": "^5.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ezra Pool",
+            "email": "ezra@tsdme.nl"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Zae\\WPVulnerabilities\\": "src"
+        }
+    },
+    "bin": ["src/scan"]
+}

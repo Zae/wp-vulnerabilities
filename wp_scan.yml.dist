@@ -1,0 +1,4 @@
+plugins:
+	providers:
+		Zae\WPVulnerabilities\Providers\Plugins\Files
+        Zae\WPVulnerabilities\Providers\Plugins\VulnDB

@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+<?php namespace Zae\WPVulnerabilities;
+
+/**
+ * @author       Ezra Pool <ezra@tsdme.nl>
+ * @copyright (c), 2016 Ezra Pool
+ */
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+$app = new Scanner;
+
+$app->resolve(Commands\ScanPluginsCommand::class);
+
+$app->run();
