@@ -52,7 +52,7 @@ class ConfigServiceProvider extends ServiceProvider
 		} catch (\Exception $e) {}
 
 		$this->app->singleton(Config::class, function () use ($config) {
-			return new Config(array_merge_recursive($this->defaultConfig, [
+			return new Config(array_merge($this->defaultConfig, [
 				'basepath' => getcwd(),
 				'plugins' => [
 					'path' => getcwd() . '/wp-content/plugins'
