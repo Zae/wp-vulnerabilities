@@ -30,5 +30,5 @@
             "Zae\\WPVulnerabilities\\": "src"
         }
     },
-    "bin": ["src/scan"]
+    "bin": ["src/wp_scan"]
 }
