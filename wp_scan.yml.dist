@@ -1,4 +1,6 @@
+http:
+  concurrency: 25
 plugins:
-	providers:
-		Zae\WPVulnerabilities\Providers\Plugins\Files
-        Zae\WPVulnerabilities\Providers\Plugins\VulnDB
+  providers:
+    - Zae\WPVulnerabilities\Providers\Plugins\Files
+    - Zae\WPVulnerabilities\Providers\Plugins\VulnDB

@@ -22,6 +22,9 @@ class ConfigServiceProvider extends ServiceProvider
 	 * @var array
 	 */
 	private $defaultConfig = [
+		'http' => [
+			'concurrency' => 5
+		],
 		'plugins' => [
 			'providers' => [
 				Files::class,
