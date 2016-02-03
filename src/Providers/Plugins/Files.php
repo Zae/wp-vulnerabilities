@@ -61,7 +61,7 @@ class Files
 		$directories = $this->filesystem->directories($this->config->get('plugins.path'));
 
 		return Collection::make($directories)->reduce(function(&$initial, $directory) {
-			$files = $this->filesystem->files($directory);
+			$files = $this->filesystem->glob($directory . '/*.php');
 
 			foreach ($files as $file) {
 				$plugin = $this->get_plugin_data($file);
