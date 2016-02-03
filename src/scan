@@ -6,7 +6,7 @@
  * @copyright (c), 2016 Ezra Pool
  */
 
-require_once __DIR__ . '/../vendor/autoload.php';
+(@include_once __DIR__ . '/../vendor/autoload.php') || @include_once __DIR__ . '/../../../autoload.php';
 
 $app = new Scanner;
 
