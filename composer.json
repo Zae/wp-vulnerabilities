@@ -5,13 +5,13 @@
     "keywords": ["wordpress", "vulnerabilities", "scanner", "wpvulndb.com"],
     "require": {
         "php": ">=5.4",
-        "guzzlehttp/guzzle": "^6.1",
+        "guzzlehttp/guzzle": "^5.3|^6.0",
         "illuminate/container": "^5.2",
         "illuminate/console": "^5.2",
-        "symfony/yaml": "^3.0",
+        "symfony/yaml": "^2.0|^3.0",
         "illuminate/filesystem": "^5.2",
         "illuminate/pipeline": "^5.2",
-        "composer/semver": "^1.2",
+        "composer/semver": "^0.1|^1.0",
         "illuminate/events": "^5.2"
     },
     "require-dev": {
