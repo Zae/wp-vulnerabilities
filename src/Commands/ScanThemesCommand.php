@@ -10,6 +10,7 @@ use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Contracts\Pipeline\Pipeline;
 use Illuminate\Support\Collection;
+use Symfony\Component\Console\Helper\TableStyle;
 use Zae\WPVulnerabilities\Config;
 use Zae\WPVulnerabilities\Entities\Entity;
 use Zae\WPVulnerabilities\Providers\General\FilterNotVulnerable;
@@ -19,17 +20,17 @@ use Zae\WPVulnerabilities\Providers\General\FilterNotVulnerable;
  *
  * @package Zae\WPVulnerabilities\Commands
  */
-class ScanPluginsCommand extends Command
+class ScanThemesCommand extends Command
 {
 	/**
 	 * @var string
 	 */
-	protected $signature = 'scan:plugins';
+	protected $signature = 'scan:themes';
 
 	/**
 	 * @var string
 	 */
-	protected $name = 'scan:plugins';
+	protected $name = 'scan:themes';
 
 	/**
 	 * @var string
@@ -79,27 +80,26 @@ class ScanPluginsCommand extends Command
 	 */
 	public function handle()
 	{
-		$plugins = $this->pipeline->send([])
-			->through($this->config->get('plugins.providers'))
-			->then(function($resolved_plugins) {
-				return $resolved_plugins;
+		$themes = $this->pipeline->send([])
+			->through($this->config->get('themes.providers'))
+			->then(function($resolved_themes) {
+				return $resolved_themes;
 			});
 
-		$vulnerable_plugins = Collection::make($plugins)
-										->map(function(Entity $plugin){
+		$vulnerable_themes = Collection::make($themes)
+										->map(function(Entity $theme){
 											return [
-												$plugin->getName(),
-												$plugin->getTitle(),
-												$plugin->getMessage()
+												$theme->getName(),
+												$theme->getTitle(),
+												$theme->getMessage()
 											];
 										});
 
-		if ($vulnerable_plugins->count() > 0) {
-			$this->error('Vulnerable Plugins Found!');
-
+		if ($vulnerable_themes->count() > 0) {
+			$this->error('Vulnerable Themes Found!');
 			$this->table([
 				'name', 'title', 'message'
-			], $vulnerable_plugins);
+			], $vulnerable_themes);
 
 			return 1;
 		}

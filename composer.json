@@ -28,7 +28,10 @@
     "autoload": {
         "psr-4": {
             "Zae\\WPVulnerabilities\\": "src"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "bin": ["src/wp_scan"]
 }

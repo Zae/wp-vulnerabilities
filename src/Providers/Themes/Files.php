@@ -1,4 +1,4 @@
-<?php namespace Zae\WPVulnerabilities\Providers\Plugins;
+<?php namespace Zae\WPVulnerabilities\Providers\Themes;
 
 /**
  * @author       Ezra Pool <ezra@tsdme.nl>
@@ -23,12 +23,10 @@ class Files
 	 * @var Filesystem
 	 */
 	private $filesystem;
-
 	/**
 	 * @var Config
 	 */
 	private $config;
-
 	/**
 	 * @var \Zae\WPVulnerabilities\Services\WordpressFileHeader
 	 */
@@ -56,7 +54,7 @@ class Files
 	 */
 	public function handle(array $plugins, Closure $next)
 	{
-		$composer_plugins = $this->findPlugins();
+		$composer_plugins = $this->findThemes();
 
 		$plugins = array_merge($plugins, $composer_plugins);
 
@@ -66,20 +64,16 @@ class Files
 	/**
 	 * @return mixed
 	 */
-	private function findPlugins()
+	private function findThemes()
 	{
-		$directories = $this->filesystem->directories($this->config->get('plugins.path'));
+		$directories = $this->filesystem->directories($this->config->get('themes.path'));
 
 		return Collection::make($directories)->reduce(function(&$initial, $directory) {
-			$files = $this->filesystem->glob($directory . '/*.php');
+			$plugin = $this->get_theme_date($directory . '/style.css');
 
-			foreach ($files as $file) {
-				$plugin = $this->get_plugin_data($file);
-
-				if (!empty($plugin['Title']) &&  !empty($plugin['Version'])) {
-					$plugin['Name'] = basename($directory);
-					$initial[] = $this->transformWPPluginToPlugin($plugin);
-				}
+			if (!empty($plugin['Name']) &&  !empty($plugin['Version'])) {
+				$plugin['Name'] = basename($directory);
+				$initial[] = $this->transformWPPluginToTheme($plugin);
 			}
 
 			return $initial;
@@ -91,11 +85,11 @@ class Files
 	 *
 	 * @return array
 	 */
-	private function get_plugin_data($plugin_file ) {
+	private function get_theme_date($plugin_file ) {
 
 		$default_headers = array(
-			'Name' => 'Plugin Name',
-			'Title' => 'Plugin Name',
+			'Name' => 'Theme Name',
+			'Title' => 'Theme Name',
 			'Version' => 'Version',
 		);
 
@@ -109,7 +103,7 @@ class Files
 	 *
 	 * @return Entity
 	 */
-	private function transformWPPluginToPlugin(array $plugin)
+	private function transformWPPluginToTheme(array $plugin)
 	{
 		return new Entity($plugin['Name'], $plugin['Version'], $plugin['Title']);
 	}

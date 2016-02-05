@@ -1,4 +1,4 @@
-<?php namespace Zae\WPVulnerabilities\Providers\Plugins;
+<?php namespace Zae\WPVulnerabilities\Providers\General;
 
 /**
  * @author       Ezra Pool <ezra@tsdme.nl>

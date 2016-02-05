@@ -1,4 +1,4 @@
-<?php namespace Zae\WPVulnerabilities;
+<?php namespace Zae\WPVulnerabilities\Entities;
 
 /**
  * @author       Ezra Pool <ezra@tsdme.nl>
@@ -6,11 +6,11 @@
  */
 
 /**
- * Class Plugin
+ * Class Entity
  *
  * @package Zae\WPVulnerabilities
  */
-class Plugin
+class Entity
 {
 	/**
 	 * @var string

@@ -1,4 +1,4 @@
-<?php namespace Zae\WPVulnerabilities\Providers\Plugins;
+<?php namespace Zae\WPVulnerabilities\Providers\Themes;
 
 /**
  * @author       Ezra Pool <ezra@tsdme.nl>
@@ -6,12 +6,12 @@
  */
 
 use Closure;
-use Composer\Semver\Comparator;
 use GuzzleHttp\Client;
 use GuzzleHttp\Pool;
 use Illuminate\Support\Collection;
 use Zae\WPVulnerabilities\Config;
 use Zae\WPVulnerabilities\Entities\Entity;
+use Zae\WPVulnerabilities\Services\VulnDBService;
 
 /**
  * Class VulnDB
@@ -24,26 +24,29 @@ class VulnDB
 	 * @var Client
 	 */
 	private $http;
-	/**
-	 * @var Comparator
-	 */
-	private $semver;
+
 	/**
 	 * @var Config
 	 */
 	private $config;
 
 	/**
+	 * @var VulnDBService
+	 */
+	private $vulnDB;
+
+	/**
 	 * VulnDB constructor.
 	 *
-	 * @param Client $http
-	 * @param Comparator $semver
+	 * @param Client        $http
+	 * @param Config        $config
+	 * @param VulnDBService $vulnDB
 	 */
-	public function __construct(Client $http, Comparator $semver, Config $config)
+	public function __construct(Client $http, Config $config, VulnDBService $vulnDB)
 	{
 		$this->http = $http;
-		$this->semver = $semver;
 		$this->config = $config;
+		$this->vulnDB = $vulnDB;
 	}
 
 	/**
@@ -68,11 +71,9 @@ class VulnDB
 	 */
 	private function findVulnerabilities($plugins)
 	{
-		$requests = Collection::make($plugins)->map(function(Entity $plugin)
-		{
-			return function() use ($plugin)
-			{
-				return $this->http->getAsync("https://wpvulndb.com/api/v2/plugins/{$plugin->getName()}/", [
+		$requests = Collection::make($plugins)->map(function (Entity $plugin) {
+			return function () use ($plugin) {
+				return $this->http->getAsync("https://wpvulndb.com/api/v2/themes/{$plugin->getName()}/", [
 					'exceptions' => false
 				]);
 			};
@@ -84,7 +85,7 @@ class VulnDB
 				if ($response->getStatusCode() === 200) {
 					$response_object = json_decode((string)$response->getBody());
 
-					if ($this->isVulnerable($response_object->{$plugins[$index]->getName()}->vulnerabilities, $plugins[$index]->getVersion(), $vulnerabilities)) {
+					if ($this->vulnDB->isVulnerable($response_object->{$plugins[$index]->getName()}->vulnerabilities, $plugins[$index]->getVersion(), $vulnerabilities)) {
 						$plugins[$index]->vulnerable(Collection::make($vulnerabilities)->implode('title', ','));
 					}
 				}
@@ -93,20 +94,5 @@ class VulnDB
 
 		return $plugins;
 	}
-
-	/**
-	 * @param      $vulnerabilities
-	 * @param      $version
-	 * @param null $found_vulnerabilities
-	 *
-	 * @return bool
-	 */
-	private function isVulnerable($vulnerabilities, $version, &$found_vulnerabilities = null)
-	{
-		$found_vulnerabilities = Collection::make($vulnerabilities)->filter(function($v) use ($version) {
-			return $this->semver->lessThan($version, $v->fixed_in);
-		});
-
-		return $found_vulnerabilities->count() > 0;
-	}
 }
+
