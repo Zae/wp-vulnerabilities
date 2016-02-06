@@ -2,11 +2,13 @@
 Scan your wordpress installation and find out if there are any vulnerable plugins installed.
 
 #Scanners
-Right now only the scan:plugins command is working
+scan:wordpress Scan your wordpress version
+scan:plugins Scan your installed plugins
+scan:wordpress Scan your installed themes
 
 #Return code
-The command will return 1 if there are vulnerable plugins found and show a table of plugins, the command will return 0
-if no vulnerable plugins were found.
+The command will return 1 if there are vulnerable plugins, themes or wordpresses found and show a table with explanations,
+the command will return 0 if no vulnerable plugins were found.
 
 #Providers
 Most of the functionality is provided by providers using a Pipeline.

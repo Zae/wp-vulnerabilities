@@ -12,5 +12,6 @@ $app = new Scanner;
 
 $app->resolve(Commands\ScanPluginsCommand::class);
 $app->resolve(Commands\ScanThemesCommand::class);
+$app->resolve(Commands\ScanWordpressCommand::class);
 
 $app->run();

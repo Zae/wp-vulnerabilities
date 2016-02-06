@@ -14,6 +14,8 @@ use Zae\WPVulnerabilities\Providers\General\FilterNotVulnerable;
 use Zae\WPVulnerabilities\Providers\Plugins\VulnDB;
 use Zae\WPVulnerabilities\Providers\Themes\Files as ThemeFiles;
 use Zae\WPVulnerabilities\Providers\Themes\VulnDB as ThemeVulnDB;
+use Zae\WPVulnerabilities\Providers\Wordpress\Files as WordpressFiles;
+use Zae\WPVulnerabilities\Providers\Wordpress\VulnDB as WordpressVulnDB;
 
 /**
  * Class ConfigServiceProvider
@@ -41,6 +43,13 @@ class ConfigServiceProvider extends ServiceProvider
 				FilterNotVulnerable::class,
 				ThemeFiles::class,
 				ThemeVulnDB::class
+			],
+		],
+		'wordpress' => [
+			'providers' => [
+				FilterNotVulnerable::class,
+				WordpressFiles::class,
+				WordpressVulnDB::class
 			],
 		]
 	];
@@ -74,6 +83,9 @@ class ConfigServiceProvider extends ServiceProvider
 				],
 				'themes' => [
 					'path' => getcwd() . '/wp-content/themes'
+				],
+				'wordpress' => [
+					'path' => getcwd()
 				]
 			], $config));
 

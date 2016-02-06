@@ -2,5 +2,16 @@ http:
   concurrency: 25
 plugins:
   providers:
+    - Zae\WPVulnerabilities\Providers\General\FilterNotVulnerable
     - Zae\WPVulnerabilities\Providers\Plugins\Files
     - Zae\WPVulnerabilities\Providers\Plugins\VulnDB
+themes:
+  providers:
+    - Zae\WPVulnerabilities\Providers\General\FilterNotVulnerable
+    - Zae\WPVulnerabilities\Providers\Themes\Files
+    - Zae\WPVulnerabilities\Providers\Themes\VulnDB
+wordpress:
+  providers:
+    - Zae\WPVulnerabilities\Providers\General\FilterNotVulnerable
+    - Zae\WPVulnerabilities\Providers\Wordpress\Files
+    - Zae\WPVulnerabilities\Providers\Wordpress\VulnDB
