@@ -7,11 +7,9 @@
 
 use Closure;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Collection;
+use Zae\WordpressFileHeader\WordpressFileHeader;
 use Zae\WPVulnerabilities\Config;
-use Zae\WPVulnerabilities\Entities\Entity;
 use Zae\WPVulnerabilities\Entities\Wordpress;
-use Zae\WPVulnerabilities\Services\WordpressFileHeader;
 
 /**
  * Class Providers
@@ -24,20 +22,22 @@ class Files
 	 * @var Filesystem
 	 */
 	private $filesystem;
+
 	/**
 	 * @var Config
 	 */
 	private $config;
+
 	/**
-	 * @var \Zae\WPVulnerabilities\Services\WordpressFileHeader
+	 * @var WordpressFileHeader
 	 */
 	private $header;
 
 	/**
 	 * Composer constructor.
 	 *
-	 * @param Filesystem                                          $filesystem
-	 * @param Config                                              $config
+	 * @param Filesystem          $filesystem
+	 * @param Config              $config
 	 * @param WordpressFileHeader $header
 	 */
 	public function __construct(Filesystem $filesystem, Config $config, WordpressFileHeader $header)
