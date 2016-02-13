@@ -15,6 +15,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Zae\WPVulnerabilities\ServiceProviders\AliasesServiceProvider;
 use Zae\WPVulnerabilities\ServiceProviders\ConfigServiceProvider;
+use Zae\WPVulnerabilities\ServiceProviders\VulnDBServiceProvider;
 
 /**
  * Class Scanner
@@ -44,6 +45,7 @@ class Scanner extends Application
 			PipelineServiceProvider::class,
 			AliasesServiceProvider::class,
 			ConfigServiceProvider::class,
+			VulnDBServiceProvider::class
 		]);
 
 		$events = $events ?: $container->make('events');

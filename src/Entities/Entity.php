@@ -100,4 +100,12 @@ class Entity
 		$this->message = $message;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getSerializedVersion()
+	{
+		return str_replace('.', '', $this->getVersion());
+	}
+
 }

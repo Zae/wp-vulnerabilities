@@ -9,7 +9,7 @@ use Closure;
 use Illuminate\Filesystem\Filesystem;
 use Zae\WordpressFileHeader\WordpressFileHeader;
 use Zae\WPVulnerabilities\Config;
-use Zae\WPVulnerabilities\Entities\Wordpress;
+use Zae\WPVulnerabilities\Entities\Entity;
 
 /**
  * Class Providers
@@ -83,7 +83,7 @@ class Files
 		include $plugin_file;
 		ob_end_clean();
 
-		return new Wordpress('wordpress', $wp_version, 'Wordpress');
+		return new Entity('wordpress', $wp_version, 'Wordpress');
 	}
 }
 

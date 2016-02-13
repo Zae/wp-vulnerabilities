@@ -5,94 +5,23 @@
  * @copyright (c), 2016 Ezra Pool
  */
 
-use Closure;
-use GuzzleHttp\Client;
-use GuzzleHttp\Pool;
-use Illuminate\Support\Collection;
-use Zae\WPVulnerabilities\Config;
 use Zae\WPVulnerabilities\Entities\Entity;
-use Zae\WPVulnerabilities\Services\VulnDBService;
+use Zae\WPVulnerabilities\Providers\General\VulnDB as VulnDBAbstraction;
 
-/**
- * Class VulnDB
- *
- * @package Zae\WPVulnerabilities\Providers\Plugins
- */
-class VulnDB
+class VulnDB extends VulnDBAbstraction
 {
 	/**
-	 * @var Client
-	 */
-	private $http;
-
-	/**
-	 * @var Config
-	 */
-	private $config;
-
-	/**
-	 * @var VulnDBService
-	 */
-	private $vulnDB;
-
-	/**
-	 * VulnDB constructor.
+	 * @param Entity $entity
 	 *
-	 * @param Client        $http
-	 * @param Config        $config
-	 * @param VulnDBService $vulnDB
+	 * @return string
 	 */
-	public function __construct(Client $http, Config $config, VulnDBService $vulnDB)
+	protected function getAPIPath(Entity $entity)
 	{
-		$this->http = $http;
-		$this->config = $config;
-		$this->vulnDB = $vulnDB;
+		return "themes/{$entity->getName()}/";
 	}
 
-	/**
-	 * @param         $plugins
-	 * @param Closure $next
-	 *
-	 * @return mixed
-	 */
-	public function handle($plugins, Closure $next)
+	protected function isVulnerable($response_object, Entity $entity, array &$vulnerabilities = null)
 	{
-		$plugins = $next($plugins);
-
-		$plugins = $this->findVulnerabilities($plugins);
-
-		return $plugins;
-	}
-
-	/**
-	 * @param $plugins
-	 *
-	 * @return mixed
-	 */
-	private function findVulnerabilities($plugins)
-	{
-		$requests = Collection::make($plugins)->map(function (Entity $plugin) {
-			return function () use ($plugin) {
-				return $this->http->getAsync("https://wpvulndb.com/api/v2/themes/{$plugin->getName()}/", [
-					'exceptions' => false
-				]);
-			};
-		})->getIterator();
-
-		(new Pool($this->http, $requests, [
-			'concurrency' => $this->config->get('http.concurrency'),
-			'fulfilled' => function ($response, $index) use (&$plugins) {
-				if ($response->getStatusCode() === 200) {
-					$response_object = json_decode((string)$response->getBody());
-
-					if ($this->vulnDB->isVulnerable($response_object->{$plugins[$index]->getName()}->vulnerabilities, $plugins[$index]->getVersion(), $vulnerabilities)) {
-						$plugins[$index]->vulnerable(Collection::make($vulnerabilities)->implode('title', ','));
-					}
-				}
-			}
-		]))->promise()->wait();
-
-		return $plugins;
+		return $this->vulnDB->isVulnerable($response_object->{$entity->getName()}->vulnerabilities, $entity->getVersion(), $vulnerabilities);
 	}
 }
-
