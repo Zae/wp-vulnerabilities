@@ -87,8 +87,8 @@ class Files
 	 *
 	 * @return array
 	 */
-	private function get_theme_date($plugin_file ) {
-
+	private function get_theme_date($plugin_file )
+	{
 		$default_headers = array(
 			'Name' => 'Theme Name',
 			'Title' => 'Theme Name',

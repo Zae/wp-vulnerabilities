@@ -6,8 +6,6 @@
  */
 
 use Closure;
-use Illuminate\Filesystem\Filesystem;
-use Zae\WordpressFileHeader\WordpressFileHeader;
 use Zae\WPVulnerabilities\Config;
 use Zae\WPVulnerabilities\Entities\Entity;
 
@@ -18,10 +16,6 @@ use Zae\WPVulnerabilities\Entities\Entity;
  */
 class Files
 {
-	/**
-	 * @var Filesystem
-	 */
-	private $filesystem;
 
 	/**
 	 * @var Config
@@ -29,22 +23,13 @@ class Files
 	private $config;
 
 	/**
-	 * @var WordpressFileHeader
-	 */
-	private $header;
-
-	/**
 	 * Composer constructor.
 	 *
-	 * @param Filesystem          $filesystem
 	 * @param Config              $config
-	 * @param WordpressFileHeader $header
 	 */
-	public function __construct(Filesystem $filesystem, Config $config, WordpressFileHeader $header)
+	public function __construct(Config $config)
 	{
-		$this->filesystem = $filesystem;
 		$this->config = $config;
-		$this->header = $header;
 	}
 
 	/**
